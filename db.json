@@ -1,0 +1,164 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "Aman",
+      "surname": "Shaikh",
+      "class": "XI",
+      "enrolled": false,
+      "parent_contact": "akthar@gmail.com"
+    },
+    {
+      "id": 2,
+      "name": "Sara",
+      "surname": "Khan",
+      "class": "XII",
+      "enrolled": false,
+      "parent_contact": "sara.khan@gmail.com"
+    },
+    {
+      "id": 3,
+      "name": "Rahul",
+      "surname": "Mehta",
+      "class": "X",
+      "enrolled": false,
+      "parent_contact": "rahul.mehta@gmail.com"
+    },
+    {
+      "id": 4,
+      "name": "Priya",
+      "surname": "Sharma",
+      "class": "IX",
+      "enrolled": false,
+      "parent_contact": "priya.sharma@gmail.com"
+    },
+    {
+      "id": 5,
+      "name": "Ankit",
+      "surname": "Verma",
+      "class": "XI",
+      "enrolled": true,
+      "parent_contact": "ankit.verma@gmail.com"
+    },
+    {
+      "id": 6,
+      "name": "Neha",
+      "surname": "Gupta",
+      "class": "XII",
+      "enrolled": true,
+      "parent_contact": "neha.gupta@gmail.com"
+    },
+    {
+      "id": 7,
+      "name": "Vikram",
+      "surname": "Singh",
+      "class": "XI",
+      "enrolled": true,
+      "parent_contact": "vikram.singh@gmail.com"
+    },
+    {
+      "id": 8,
+      "name": "Isha",
+      "surname": "Patel",
+      "class": "X",
+      "enrolled": true,
+      "parent_contact": "isha.patel@gmail.com"
+    },
+    {
+      "id": 9,
+      "name": "Rohan",
+      "surname": "Deshmukh",
+      "class": "IX",
+      "enrolled": true,
+      "parent_contact": "rohan.deshmukh@gmail.com"
+    },
+    {
+      "id": 10,
+      "name": "Sneha",
+      "surname": "Joshi",
+      "class": "XII",
+      "enrolled": true,
+      "parent_contact": "sneha.joshi@gmail.com"
+    },
+    {
+      "id": 11,
+      "name": "Karan",
+      "surname": "Yadav",
+      "class": "X",
+      "enrolled": true,
+      "parent_contact": "karan.yadav@gmail.com"
+    },
+    {
+      "id": 12,
+      "name": "Simran",
+      "surname": "Chopra",
+      "class": "XI",
+      "enrolled": true,
+      "parent_contact": "simran.chopra@gmail.com"
+    },
+    {
+      "id": 13,
+      "name": "Ravi",
+      "surname": "Kapoor",
+      "class": "XII",
+      "enrolled": true,
+      "parent_contact": "ravi.kapoor@gmail.com"
+    },
+    {
+      "id": 14,
+      "name": "Tanya",
+      "surname": "Malhotra",
+      "class": "IX",
+      "enrolled": true,
+      "parent_contact": "tanya.malhotra@gmail.com"
+    },
+    {
+      "id": 15,
+      "name": "Deepak",
+      "surname": "Mishra",
+      "class": "X",
+      "enrolled": true,
+      "parent_contact": "deepak.mishra@gmail.com"
+    },
+    {
+      "id": 16,
+      "name": "Pooja",
+      "surname": "Reddy",
+      "class": "XI",
+      "enrolled": true,
+      "parent_contact": "pooja.reddy@gmail.com"
+    },
+    {
+      "id": 17,
+      "name": "Abhishek",
+      "surname": "Shukla",
+      "class": "XII",
+      "enrolled": true,
+      "parent_contact": "abhishek.shukla@gmail.com"
+    },
+    {
+      "id": 18,
+      "name": "Megha",
+      "surname": "Bhatia",
+      "class": "IX",
+      "enrolled": true,
+      "parent_contact": "megha.bhatia@gmail.com"
+    },
+    {
+      "id": 19,
+      "name": "Arjun",
+      "surname": "Choudhary",
+      "class": "X",
+      "enrolled": true,
+      "parent_contact": "arjun.choudhary@gmail.com"
+    },
+    {
+      "id": 20,
+      "name": "Kritika",
+      "surname": "Bansal",
+      "class": "XI",
+      "enrolled": true,
+      "parent_contact": "kritika.bansal@gmail.com"
+    }
+  ]
+}

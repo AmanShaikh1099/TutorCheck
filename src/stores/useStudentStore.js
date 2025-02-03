@@ -1,0 +1,40 @@
+import { defineStore } from "pinia";
+import axios from "axios";
+export const useStudentStore = defineStore("students", {
+  state: () => {
+    return {
+      students: [],
+      enrolledStudents: [],
+      inquiredStudents: [],
+    };
+  },
+  actions: {
+    getStudent() {
+      axios
+        .get("http://localhost:3000/students")
+        .then((response) => {
+          this.students = response.data;
+          return this.students;
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    },
+    getEnrolledStudents() {
+      if (this.students.length > 0) {
+        this.enrolledStudents = this.students.filter(
+          (student) => student.enrolled === true
+        );
+        return this.enrolledStudents;
+      }
+    },
+    getInquiredStundents() {
+      if (this.students.length > 0) {
+        this.inquiredStudents = this.students.filter(
+          (student) => student.enrolled === false
+        );
+        return this.inquiredStudents;
+      }
+    },
+  },
+});
