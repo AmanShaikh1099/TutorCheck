@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Button  :disabled="disabled" @click="click" :label="text" :severity="type" />
+    <Button  :disabled="disabled" @click="clickFunction" :label="text" :severity="type" />
   </div>
     
   
@@ -21,13 +21,14 @@ export default {
             type: Boolean,
             default: false
         },
-        click: {
+        clickFunction: {
             type: Function,
             default: () => {}
         }
     },
     setup(props){
     console.log(props.type)
+    console.log(props.clickFunction)
     }
 
 }

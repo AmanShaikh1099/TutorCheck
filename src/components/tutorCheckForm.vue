@@ -1,6 +1,7 @@
 <template>
   <div>
-    <tutorButton text="New" type="success"></tutorButton>
+    <tutorButton text="New" type="success" :clickFunction="createNewEntry"></tutorButton>
+    <tutorDialog v-if ="visible" :visibleDialog="visible"></tutorDialog>
     <tutorDropDown
       :options="dropdownOptions"
       @selectedItem="getEnrolledStudentList"
@@ -23,6 +24,7 @@ export default {
     const student = useStudentStore();
     const dropdownOptions = ref(["Enrolled", "Inquiry"]);
     const data = ref([]);
+    const visible = ref(false);
     const getEnrolledStudentList = (status) => {
       if (status === "Enrolled") {
         data.value = student.getEnrolledStudents();
@@ -32,6 +34,9 @@ export default {
         data.value = student.getStudent();
       }
     };
+    const createNewEntry = () =>{
+      visible.value = !visible.value;
+    }
     onMounted(() => {
       data.value = student.getStudent();
     });
@@ -41,7 +46,9 @@ export default {
     return {
       data,
       dropdownOptions,
+      visible,
       getEnrolledStudentList,
+      createNewEntry
     };
   },
 };
