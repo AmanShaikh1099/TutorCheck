@@ -1,5 +1,5 @@
 import './assets/main.css'
-
+import '../src/style.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
@@ -15,7 +15,6 @@ import Lara from '@primevue/themes/lara'
 import Dialog from 'primevue/dialog'
 import InputText from 'primevue/inputtext'
 import TextArea from 'primevue/textarea'
-
 
 
 import "primeicons/primeicons.css"
