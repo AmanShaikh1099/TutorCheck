@@ -1,7 +1,7 @@
 <template>
   <div>
     <tutorButton text="New" type="success" :clickFunction="createNewEntry"></tutorButton>
-    <tutorDialog v-if ="visible" :visibleDialog="visible"></tutorDialog>
+    <tutorDialog v-if ="visible===true" ></tutorDialog>
     <tutorDropDown
       :options="dropdownOptions"
       @selectedItem="getEnrolledStudentList"
@@ -25,6 +25,7 @@ export default {
     const dropdownOptions = ref(["Enrolled", "Inquiry"]);
     const data = ref([]);
     const visible = ref(false);
+    data.value = student.getStudent();
     const getEnrolledStudentList = (status) => {
       if (status === "Enrolled") {
         data.value = student.getEnrolledStudents();
@@ -37,10 +38,7 @@ export default {
     const createNewEntry = () =>{
       visible.value = !visible.value;
     }
-    onMounted(() => {
-      data.value = student.getStudent();
-    });
-    watchEffect(() => {
+  watchEffect(() => {
       data.value = student.students;
     });
     return {

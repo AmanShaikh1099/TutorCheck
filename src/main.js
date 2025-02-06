@@ -14,6 +14,7 @@ import Button from 'primevue/button'
 import Lara from '@primevue/themes/lara'
 import Dialog from 'primevue/dialog'
 import InputText from 'primevue/inputtext'
+import TextArea from 'primevue/textarea'
 
 
 
@@ -30,6 +31,7 @@ app.component('AutoComplete',AutoComplete)
 app.component('Button',Button)
 app.component('Dialog',Dialog)
 app.component('InputText',InputText)
+app.component('Textarea',TextArea)
 
 
 
