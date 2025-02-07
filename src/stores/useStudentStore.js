@@ -36,5 +36,15 @@ export const useStudentStore = defineStore("students", {
         return this.inquiredStudents;
       }
     },
+    addStudent(student) {
+      axios
+        .post("http://localhost:3000/students", student)
+        .then((response) => {
+          this.students.push(response.data);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    },
   },
 });

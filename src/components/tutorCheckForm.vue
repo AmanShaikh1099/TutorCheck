@@ -1,13 +1,33 @@
 <template>
-  <div>
-    <tutorButton text="New" type="success" :clickFunction="createNewEntry"></tutorButton>
-    <tutorDialog v-if ="visible===true" ></tutorDialog>
-    <tutorDropDown
-      :options="dropdownOptions"
-      @selectedItem="getEnrolledStudentList"
-    ></tutorDropDown>
-    <div v-if="data.length > 0">
-      <tutorDataTable :data="data"></tutorDataTable>
+  <div class="p-6 pr-12 bg-gray-50 rounded-lg shadow-md relative">
+    <!-- New Entry Button -->
+    <div class="relative">
+      <tutorButton
+        text="New"
+        type="success"
+        :clickFunction="createNewEntry"
+        class="bg-green-500 text-white px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 absolute top-0 right-0"
+      ></tutorButton>
+
+      <tutorDropDown
+        :options="dropdownOptions"
+        @selectedItem="getEnrolledStudentList"
+        class="mt-12 w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400"
+      ></tutorDropDown>
+    </div>
+
+    <!-- Tutor Dialog -->
+    <tutorDialog
+      v-if="visible === true"
+      @sendQuery="updateStudentList"
+    ></tutorDialog>
+
+   <!-- Data Table -->
+    <div v-if="data.length > 0" class="mt-6">
+      <tutorDataTable
+        :data="data"
+        class="border-t border-gray-300 shadow-sm rounded-md overflow-hidden"
+      ></tutorDataTable>
     </div>
   </div>
 </template>
@@ -38,6 +58,9 @@ export default {
     const createNewEntry = () =>{
       visible.value = !visible.value;
     }
+    const updateStudentList = (newStudent) => {
+      student.addStudent(newStudent);
+    };
   watchEffect(() => {
       data.value = student.students;
     });
@@ -46,7 +69,8 @@ export default {
       dropdownOptions,
       visible,
       getEnrolledStudentList,
-      createNewEntry
+      createNewEntry,
+      updateStudentList
     };
   },
 };
