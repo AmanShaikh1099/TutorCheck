@@ -25,8 +25,11 @@
    <!-- Data Table -->
     <div v-if="data.length > 0" class="mt-6">
       <tutorDataTable
-        :data="data"
+        :dataEntries="data"
         class="border-t border-gray-300 shadow-sm rounded-md overflow-hidden"
+        :column-component="columnComponent"
+        :column-component-props="columnComponentProps"
+        :lazy-load="true"
       ></tutorDataTable>
     </div>
   </div>
@@ -34,7 +37,7 @@
 
 <script>
 import { useStudentStore } from "@/stores/useStudentStore";
-import { onMounted, ref, computed, watchEffect } from "vue";
+import { onMounted, ref, computed, watchEffect,markRaw } from "vue";
 import tutorDataTable from "../tutorFormBuilder/tutorDataTable.vue";
 import TutorButton from "../tutorFormBuilder/tutorButton.vue";
 export default {
@@ -45,6 +48,15 @@ export default {
     const dropdownOptions = ref(["Enrolled", "Inquiry"]);
     const data = ref([]);
     const visible = ref(false);
+    const columnComponent = ref(markRaw(TutorButton));
+    const createNewEntry = () =>{
+      visible.value = !visible.value;
+    }
+    const columnComponentProps = ref({
+      text: "Enroll",
+      type: "info",
+      clickFunction: createNewEntry,
+    });
     data.value = student.getStudent();
     const getEnrolledStudentList = (status) => {
       if (status === "Enrolled") {
@@ -55,9 +67,6 @@ export default {
         data.value = student.getStudent();
       }
     };
-    const createNewEntry = () =>{
-      visible.value = !visible.value;
-    }
     const updateStudentList = (newStudent) => {
       student.addStudent(newStudent);
     };
@@ -70,7 +79,9 @@ export default {
       visible,
       getEnrolledStudentList,
       createNewEntry,
-      updateStudentList
+      updateStudentList,
+      columnComponentProps,
+      columnComponent
     };
   },
 };

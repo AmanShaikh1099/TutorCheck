@@ -1,6 +1,6 @@
 <template>
   <DataTable
-    :value="data"
+    :value="dataEntries"
     scrollable
     scrollHeight="400px"
     tableStyle="min-width: 50rem"
@@ -10,21 +10,36 @@
       :key="col"
       :field="col"
       :header="col.toUpperCase()"
-    ></Column>
+   />
+   <Column> 
+    <template #body="{ data}">
+    <component v-if = "data.enrolled === false" :is="columnComponent" :rowData="data" v-bind="columnComponentProps"/>
+      </template></Column>
+      
+ 
+  
   </DataTable>
 </template>
 <script>
 export default {
   name: "tutorDataTable",
   props: {
-    data: {
+    dataEntries: {
       type: Array,
+      required: true,
+    },
+    columnComponent: {
+      type: Object,
+      required: true,
+    },
+    columnComponentProps: {
+      type: Object,
       required: true,
     },
     lazyLoad: Boolean,
   },
   setup(props) {
-    const columns = Object.keys(props.data[0]);
+    const columns = Object.keys(props.dataEntries[0]);
     return {
       columns,
     };
