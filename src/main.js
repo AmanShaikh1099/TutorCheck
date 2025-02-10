@@ -8,6 +8,7 @@ import { Column, DataTable, AutoComplete} from 'primevue'
 import tutorDataTable from './tutorFormBuilder/tutorDataTable.vue'
 import tutorDropDown from './tutorFormBuilder/tutorDropDown.vue'
 import tutorDialog from './tutorFormBuilder/tutorDialog.vue'
+import tutorLogin from './login/tutorLogin.vue'
 import PrimeVue from 'primevue/config'
 import TutorButton from './tutorFormBuilder/tutorButton.vue'
 import Button from 'primevue/button'
@@ -38,6 +39,7 @@ app.component('tutorDataTable',tutorDataTable)
 app.component('tutorDropDown',tutorDropDown)
 app.component('tutorButton',TutorButton)
 app.component("tutorDialog",tutorDialog)
+app.component('tutorLogin',tutorLogin)
 
 
 app.use(PrimeVue,{
