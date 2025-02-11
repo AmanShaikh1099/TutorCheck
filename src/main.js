@@ -16,6 +16,7 @@ import Lara from '@primevue/themes/lara'
 import Dialog from 'primevue/dialog'
 import InputText from 'primevue/inputtext'
 import TextArea from 'primevue/textarea'
+import router from './router/router.js'
 
 
 import "primeicons/primeicons.css"
@@ -23,7 +24,9 @@ import "primeicons/primeicons.css"
 
 const app = createApp(App)
 const pinia = createPinia()
+
 app.use(pinia)
+app.use(router)
 app.component('tutorCheckForm',tutorCheckForm)
 app.component('DataTable',DataTable)
 app.component('Column',Column)

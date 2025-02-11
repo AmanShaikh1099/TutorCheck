@@ -15,7 +15,7 @@
       <tutorButton 
         text="Login" 
         type="primary" 
-        :clickFunction="$emit('user-login', userName, password)"
+        :clickFunction="onSubmit"
         
       />
     </div>
@@ -24,16 +24,24 @@
 
 
 <script>
+import { useStudentStore } from "@/stores/useStudentStore";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 export default {
   name: "tutorLogin",
   setup() {
     const userName = ref("");
     const password = ref("");
-  
+    const store = useStudentStore()
+    const router = useRouter()
+    const onSubmit = ()=>{
+       router.push('/tutorCheckForm')
+    }
+    
     return {
         userName,
-        password
+        password,
+        onSubmit
     };
   },
 };

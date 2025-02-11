@@ -46,5 +46,13 @@ export const useStudentStore = defineStore("students", {
           console.log(error.message);
         });
     },
+    userLogin(email, password) {
+      console.log(email, password);
+      axios.patch(`http://localhost:3000/login/${password}`,{password:password}).then((response) => {
+       console.log(response.data);
+     }).catch((error) => {
+       console.log(error.message);
+     })
+   },
   },
 });
