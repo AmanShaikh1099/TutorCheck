@@ -35,6 +35,7 @@ export default {
     const store = useStudentStore()
     const router = useRouter()
     const onSubmit = ()=>{
+       store.userLogin(userName.value,password.value)
        router.push('/tutorCheckForm')
     }
     

@@ -26,11 +26,6 @@ export default {
             default: () => {}
         }
     },
-    setup(props){
-    console.log(props.type)
-    console.log(props.clickFunction)
-    }
-
 }
 </script>
 

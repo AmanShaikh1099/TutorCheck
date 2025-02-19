@@ -5,11 +5,7 @@
 
             <!-- Username -->
             <div class="flex flex-col gap-4 mb-4">
-                <InputText id="username" v-model = "userNameValue" class="flex-auto" autocomplete="off" placeholder="Student Name" required />
-                <InputText id="email" v-model = "emailValue" class="flex-auto" autocomplete="off" placeholder="Email or Phone Number" required />
-                <InputText id="Standard" v-model = "standardValue" class="flex-auto" autocomplete="off" placeholder="Standard" required />
-                <InputText id="School" v-model = "schoolValue" class="flex-auto" autocomplete="off" placeholder="School" required />
-                <Textarea id="description" v-model="descriptionValue" rows="5" class="w-full input-field" placeholder="Enter details..." />
+                <InputText v-for = "labels in labelsArray" :key ="labels.key"  class="flex-auto" autocomplete="off" :placeholder="labels.placeholder" :disabled="labels.disabled" />
             </div>
 
         <!-- Footer Buttons -->
@@ -32,10 +28,14 @@ export default {
         {
             type: Boolean,
             required: false
+        },
+        labelsArray:{
+            type: Array,
+            required: true,
         }
     },
     emit: ["sendQuery"],
-    setup(_, { emit }) {
+    setup(props, { emit }) {
         const visible = ref(true);
         const descriptionValue = ref('');
         const userNameValue = ref('');
@@ -43,15 +43,19 @@ export default {
         const standardValue = ref('');
         const inquiryValue = ref('');
         const schoolValue = ref('');
-
+        const labelValue = ref([])
+        props.labelsArray.forEach((label) => {
+            labelValue.value.push({
+                "key":label.key,
+                "placeholder":"",
+                "disabled":label.disabled
+            })
+        })
         const sendNewStudentQuery = () => {
             emit('sendQuery', {
-                description: descriptionValue.value,
                 name: userNameValue.value,
                 parent_contact: emailValue.value,
-                class: standardValue.value,
-                enrolled: inquiryValue.value.toLocaleLowerCase() ==='enrolled'.toLocaleLowerCase() ? true : false,
-                school: schoolValue.value
+                student_class: standardValue.value,
             });
             visible.value = false;
         }
@@ -64,6 +68,7 @@ export default {
             emailValue,
             standardValue,
             schoolValue,
+            labelValue,
 
             sendNewStudentQuery
         }

@@ -22,7 +22,6 @@ export default {
   },
   emit: ["selectedItem"],
   setup(props, { emit }) {
-    console.log(props.options);
     const selectedItem = ref("");
     const dropdownOptions = ref([]);
     dropdownOptions.value = props.options;

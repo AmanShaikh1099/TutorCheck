@@ -19,6 +19,7 @@
     <!-- Tutor Dialog -->
     <tutorDialog
       v-if="visible === true"
+      :labelsArray="dialogLabels"
       @sendQuery="updateStudentList"
     ></tutorDialog>
 
@@ -26,6 +27,7 @@
     <div v-if="data.length > 0" class="mt-6">
       <tutorDataTable
         :dataEntries="data"
+        @rowData = "addLabels"
         class="border-t border-gray-300 shadow-sm rounded-md overflow-hidden"
         :column-component="columnComponent"
         :column-component-props="columnComponentProps"
@@ -47,10 +49,62 @@ export default {
     const student = useStudentStore();
     const dropdownOptions = ref(["Enrolled", "Inquiry"]);
     const data = ref([]);
+    const dialogLabels = ref([])
     const visible = ref(false);
     const columnComponent = ref(markRaw(TutorButton));
     const createNewEntry = () =>{
+      dialogLabels.value = [
+        {
+          "key": 0, 
+          "placeholder": "Student Name",
+          "disabled": false
+        },
+        {
+          "key": 1, 
+          "placeholder": "School Name",
+          "disabled": false
+        },
+        {
+          "key": 2, 
+          "placeholder": "Standard",
+          "disabled": false
+        },
+        {
+          "key": 3, 
+          "placeholder": "Parent Contact",
+          "disabled": false
+        }
+      ]
       visible.value = !visible.value;
+    }
+    const addLabels = (data) => {
+     dialogLabels.value = [
+      {
+        "key": 0, 
+        "placeholder": "Quoted Amount",
+        "disabled": false
+      },
+      {
+        "key": 1, 
+        "placeholder": "Advance Amount Recieved",
+        "disabled": false
+      },
+      {
+        "key": 2, 
+        "placeholder": "Amount Recieved By",
+        "disabled": false
+      }]
+      let i = 3;
+      if(data){
+      Object.values(data).forEach((element) => {
+          dialogLabels.value.push({
+            "key": i,
+            "placeholder": element,
+            "disabled": true
+          });
+          i++;
+        });
+      }
     }
     const columnComponentProps = ref({
       text: "Enroll",
@@ -80,8 +134,10 @@ export default {
       getEnrolledStudentList,
       createNewEntry,
       updateStudentList,
+      addLabels,
       columnComponentProps,
-      columnComponent
+      columnComponent,
+      dialogLabels
     };
   },
 };

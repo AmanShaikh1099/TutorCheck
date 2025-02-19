@@ -13,7 +13,7 @@
    />
    <Column> 
     <template #body="{ data}">
-    <component v-if = "data.enrolled === false" :is="columnComponent" :rowData="data" v-bind="columnComponentProps"/>
+    <component v-if = "data.enrolled === false" :is="columnComponent" :rowData="data" v-bind="columnComponentProps" @click ="emitRowData(data)"/>
       </template></Column>
       
  
@@ -38,10 +38,15 @@ export default {
     },
     lazyLoad: Boolean,
   },
-  setup(props) {
+  emits: ["rowData"],
+  setup(props,{emit}) {
     const columns = Object.keys(props.dataEntries[0]);
+    const emitRowData = (data) => {
+      emit("rowData", data);
+    };
     return {
       columns,
+      emitRowData
     };
   },
 };

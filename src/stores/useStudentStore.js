@@ -3,6 +3,7 @@ import axios from "axios";
 export const useStudentStore = defineStore("students", {
   state: () => {
     return {
+      userId: Number,
       students: [],
       enrolledStudents: [],
       inquiredStudents: [],
@@ -11,7 +12,7 @@ export const useStudentStore = defineStore("students", {
   actions: {
     getStudent() {
       axios
-        .get("http://localhost:3000/students")
+        .get(`http://localhost:3001/student/${this.userId}`)
         .then((response) => {
           this.students = response.data;
           return this.students;
@@ -33,12 +34,13 @@ export const useStudentStore = defineStore("students", {
         this.inquiredStudents = this.students.filter(
           (student) => student.enrolled === false
         );
+        console.log(this.inquiredStudents);
         return this.inquiredStudents;
       }
     },
     addStudent(student) {
       axios
-        .post("http://localhost:3000/students", student)
+        .post(`http://localhost:3001/student/${this.userId}`, student)
         .then((response) => {
           this.students.push(response.data);
         })
@@ -46,13 +48,17 @@ export const useStudentStore = defineStore("students", {
           console.log(error.message);
         });
     },
-    userLogin(email, password) {
-      console.log(email, password);
-      axios.patch(`http://localhost:3000/login/${password}`,{password:password}).then((response) => {
-       console.log(response.data);
-     }).catch((error) => {
-       console.log(error.message);
-     })
-   },
+    userLogin(username, password) {
+      axios.post("http://localhost:3001/auth/login",{
+      username,
+      password}
+    ).then((response) => {
+        this.userId = response.data.userId;
+        console.log(response.data);
+      }).catch((error) => {
+        console.log(error.message);
+      });
+
+    },
   },
 });
