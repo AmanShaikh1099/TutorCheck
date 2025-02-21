@@ -5,7 +5,7 @@
 
             <!-- Username -->
             <div class="flex flex-col gap-4 mb-4">
-                <InputText v-for = "labels in labelsArray" :key ="labels.key"  class="flex-auto" autocomplete="off" :placeholder="labels.placeholder" :disabled="labels.disabled" />
+                <InputText v-for = "labels in labelsArray" :key ="labels.key" v-model = "labelValue[labels.placeholder]" class="flex-auto" autocomplete="off" :placeholder="labels.placeholder" :disabled="labels.disabled" />
             </div>
 
         <!-- Footer Buttons -->
@@ -52,6 +52,7 @@ export default {
             })
         })
         const sendNewStudentQuery = () => {
+            console.log(labelValue.value)
             emit('sendQuery', {
                 name: userNameValue.value,
                 parent_contact: emailValue.value,
