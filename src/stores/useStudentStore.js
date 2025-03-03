@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import  api  from "../api";
 export const useStudentStore = defineStore("students", {
   state: () => {
     return {
@@ -7,13 +8,20 @@ export const useStudentStore = defineStore("students", {
       students: [],
       enrolledStudents: [],
       inquiredStudents: [],
+
     };
   },
   actions: {
     getStudent() {
-      axios
-        .get(`http://localhost:3001/student/${this.userId}`)
+      api
+        .get("student/",{
+          userId: this.userId,
+          headers:{
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`
+          }
+        })
         .then((response) => {
+          console.log(response.data);
           this.students = response.data;
           return this.students;
         })
@@ -39,26 +47,44 @@ export const useStudentStore = defineStore("students", {
       }
     },
     addStudent(student) {
-      axios
-        .post(`http://localhost:3001/student/${this.userId}`, student)
+      api
+        .post("student/", {student},  {headers:{
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`
+        }})
         .then((response) => {
+          console.log(response.data)
           this.students.push(response.data);
         })
         .catch((error) => {
           console.log(error.message);
         });
     },
+    enrollStudent(student){
+      api.patch(`student/${student.id}`,{student}, {headers:{
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`
+      }}).then((response)=>{
+        console.log(response.data, student)
+        if(this.students.find((s)=> s.student_id === student.id)){
+          this.students.find((s)=> s.student_id === student.id).enrolled = true;
+        }
+      }).catch((error)=>{
+
+        console.log(error.message)
+      })
+    },
     userLogin(username, password) {
-      axios.post("http://localhost:3001/auth/login",{
+     return api.post("auth/login",{
       username,
       password}
     ).then((response) => {
         this.userId = response.data.userId;
-        console.log(response.data);
+        sessionStorage.setItem("token", response.data.token);
+        console.log(response.data, response.status);
+        return response.status;
       }).catch((error) => {
         console.log(error.message);
+        return null;
       });
-
-    },
+},
   },
 });

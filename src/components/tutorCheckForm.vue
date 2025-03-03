@@ -22,6 +22,7 @@
       :labelsArray="dialogLabels"
       @sendQuery="updateStudentList"
     ></tutorDialog>
+    <tutorDialogEnrollStudent v-if = "visibleEnrollDialog" :studentId = "studentId" :labels = "dialogLabels" @sendEnrollQuery = "enrollStudentInList"></tutorDialogEnrollStudent>
 
    <!-- Data Table -->
     <div v-if="data.length > 0" class="mt-6">
@@ -42,59 +43,31 @@ import { useStudentStore } from "@/stores/useStudentStore";
 import { onMounted, ref, computed, watchEffect,markRaw } from "vue";
 import tutorDataTable from "../tutorFormBuilder/tutorDataTable.vue";
 import TutorButton from "../tutorFormBuilder/tutorButton.vue";
+import { useRouter } from "vue-router";
 export default {
   components: { tutorDataTable, TutorButton },
-  name: "tutorCheckForm",
+  name: "TutorCheckForm",
   setup() {
     const student = useStudentStore();
     const dropdownOptions = ref(["Enrolled", "Inquiry"]);
     const data = ref([]);
     const dialogLabels = ref([])
     const visible = ref(false);
+    const router = useRouter();
+    const visibleEnrollDialog = ref(false);
     const columnComponent = ref(markRaw(TutorButton));
+    const studentId = ref(0);
     const createNewEntry = () =>{
-      dialogLabels.value = [
-        {
-          "key": 0, 
-          "placeholder": "Student Name",
-          "disabled": false
-        },
-        {
-          "key": 1, 
-          "placeholder": "School Name",
-          "disabled": false
-        },
-        {
-          "key": 2, 
-          "placeholder": "Standard",
-          "disabled": false
-        },
-        {
-          "key": 3, 
-          "placeholder": "Parent Contact",
-          "disabled": false
-        }
-      ]
       visible.value = !visible.value;
     }
+    const enrollStudent = () =>{
+      visibleEnrollDialog.value = !visibleEnrollDialog.value;
+    }
     const addLabels = (data) => {
-     dialogLabels.value = [
-      {
-        "key": 0, 
-        "placeholder": "Quoted Amount",
-        "disabled": false
-      },
-      {
-        "key": 1, 
-        "placeholder": "Advance Amount Recieved",
-        "disabled": false
-      },
-      {
-        "key": 2, 
-        "placeholder": "Amount Recieved By",
-        "disabled": false
-      }]
-      let i = 3;
+      dialogLabels.value = [];
+      studentId.value = data.student_id;
+      let i = 0;
+      console.log(data);
       if(data){
       Object.values(data).forEach((element) => {
           dialogLabels.value.push({
@@ -109,7 +82,7 @@ export default {
     const columnComponentProps = ref({
       text: "Enroll",
       type: "info",
-      clickFunction: createNewEntry,
+      clickFunction: enrollStudent,
     });
     data.value = student.getStudent();
     const getEnrolledStudentList = (status) => {
@@ -124,6 +97,10 @@ export default {
     const updateStudentList = (newStudent) => {
       student.addStudent(newStudent);
     };
+    const enrollStudentInList = (students) =>{
+      console.log(students);
+      student.enrollStudent(students);
+    }
   watchEffect(() => {
       data.value = student.students;
     });
@@ -135,9 +112,13 @@ export default {
       createNewEntry,
       updateStudentList,
       addLabels,
+      enrollStudentInList,
       columnComponentProps,
       columnComponent,
-      dialogLabels
+      studentId,
+      dialogLabels,
+      visibleEnrollDialog,
+      
     };
   },
 };

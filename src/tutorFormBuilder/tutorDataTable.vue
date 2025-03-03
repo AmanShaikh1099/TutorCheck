@@ -42,6 +42,7 @@ export default {
   setup(props,{emit}) {
     const columns = Object.keys(props.dataEntries[0]);
     const emitRowData = (data) => {
+      console.log(data);
       emit("rowData", data);
     };
     return {
