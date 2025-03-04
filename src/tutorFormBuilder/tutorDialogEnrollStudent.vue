@@ -3,7 +3,7 @@
   <Dialog
     v-model:visible="visible"
     modal
-    header="Create an Inquiry "
+    header="Enroll Student"
     :style="{ width: '30rem' }"
   >
     <div class="flex flex-col gap-4 mb-4">
@@ -24,6 +24,16 @@
         class="flex-auto"
         autocomplete="off"
         placeholder="Recieved By"
+      />
+      <MultiSelect
+        v-model="selectedSubjects"
+        showClear
+        :options="subjects"
+        optionLabel="name"
+        filter
+        placeholder="Enrolled Subjects"
+        :maxSelectedLabels="3"
+        class="flex-auto"
       />
       <InputText
         v-for="label in computedLabels"
@@ -54,7 +64,7 @@
 </template>
 
 <script>
-import { ref,computed } from "vue";
+import { ref, computed, watchEffect } from "vue";
 export default {
   name: "tutorDialogEnrollStudent",
   props: {
@@ -74,6 +84,14 @@ export default {
   setup(props, { emit }) {
     console.log(props.labels);
     const visible = ref(true);
+    const selectedSubjects = ref();
+    const subjects = ref([
+      { name: "Maths", code: "MTH" },
+      { name: "Physics", code: "PHY" },
+      { name: "Chemistry", code: "CHM" },
+      { name: "Biology", code: "BIO" },
+      { name: "English", code: "ENG" },
+    ]);
     const quotedAmount = ref("");
     const amountRecieved = ref("");
     const recievedBy = ref("");
@@ -88,17 +106,23 @@ export default {
         amount_quoted: quotedAmount.value,
         amount_recieved: amountRecieved.value,
         recieved_by: recievedBy.value,
+        enrolled_subjects: JSON.stringify(selectedSubjects.value),
         enrolled: true,
       });
       visible.value = false;
     };
-
+    watchEffect(() =>{
+      console.log(JSON.stringify(selectedSubjects.value));
+    })
+    
     return {
       visible,
       quotedAmount,
       amountRecieved,
       recievedBy,
       computedLabels,
+      selectedSubjects,
+      subjects,
 
       sendEnrolledQuery,
     };

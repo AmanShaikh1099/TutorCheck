@@ -48,7 +48,7 @@ export const useStudentStore = defineStore("students", {
     },
     addStudent(student) {
       api
-        .post("student/", {student},  {headers:{
+        .post("student/", student,  {headers:{
           Authorization: `Bearer ${sessionStorage.getItem("token")}`
         }})
         .then((response) => {

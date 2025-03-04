@@ -60,11 +60,16 @@ export default {
             console.log(userNameValue.value, emailValue.value, standardValue.value,emailValue.value);    
             emit('sendQuery', {
                 name: userNameValue.value,
+                school: schoolValue.value,
                 parent_contact: emailValue.value,
                 student_class: standardValue.value,
             });
             visible.value = false;
         }
+        watchEffect(() => {
+            console.log(userNameValue.value, emailValue.value, standardValue.value,emailValue.value);    
+            
+        });
 
         
         return {
