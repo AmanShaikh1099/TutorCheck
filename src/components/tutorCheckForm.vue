@@ -23,12 +23,13 @@
       @sendQuery="updateStudentList"
     ></tutorDialog>
     <tutorDialogEnrollStudent v-if = "visibleEnrollDialog" :studentId = "studentId" :labels = "dialogLabels" @sendEnrollQuery = "enrollStudentInList"></tutorDialogEnrollStudent>
-
+    <tutorStudentCard v-if = "visibleStudentDialog" :studentInfo = "studentData"></tutorStudentCard>
    <!-- Data Table -->
     <div v-if="data.length > 0" class="mt-6">
       <tutorDataTable
         :dataEntries="data"
         @rowData = "addLabels"
+        @studentData = "getStudentDetails"
         class="border-t border-gray-300 shadow-sm rounded-md overflow-hidden"
         :column-component="columnComponent"
         :column-component-props="columnComponentProps"
@@ -54,11 +55,22 @@ export default {
     const dialogLabels = ref([])
     const visible = ref(false);
     const router = useRouter();
+    const visibleStudentDialog = ref(false);
+    const studentData = ref({});
     const visibleEnrollDialog = ref(false);
     const columnComponent = ref(markRaw(TutorButton));
     const studentId = ref(0);
     const createNewEntry = () =>{
       visible.value = !visible.value;
+    }
+    const getStudentDetails = (data) => {
+    student.getStudentWithId(data.student_id).then((response) => {
+      studentData.value = response;
+      visibleStudentDialog.value = !visibleStudentDialog.value;
+    }).catch((error) => {
+      console.log(error);
+    })
+      
     }
     const enrollStudent = () =>{
       visibleEnrollDialog.value = !visibleEnrollDialog.value;
@@ -118,6 +130,9 @@ export default {
       studentId,
       dialogLabels,
       visibleEnrollDialog,
+      getStudentDetails,
+      studentData,
+      visibleStudentDialog
       
     };
   },

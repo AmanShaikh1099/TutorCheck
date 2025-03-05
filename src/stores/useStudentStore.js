@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import axios from "axios";
 import  api  from "../api";
 export const useStudentStore = defineStore("students", {
   state: () => {
@@ -29,6 +28,17 @@ export const useStudentStore = defineStore("students", {
           console.log(error.message);
         });
     },
+    getStudentWithId(studentId){
+   
+  return api.get(`student/${studentId}`,{headers:{
+ Authorization: `Bearer ${sessionStorage.getItem("token")}`
+    }}).then((response)=>{
+      console.log(response.data)
+      return response.data;
+    }).catch((error)=>{
+      console.log(error.message)
+    })
+  },
     getEnrolledStudents() {
       if (this.students.length > 0) {
         this.enrolledStudents = this.students.filter(

@@ -14,10 +14,9 @@
    <Column> 
     <template #body="{ data}">
     <component v-if = "data.enrolled === false" :is="columnComponent" :rowData="data" v-bind="columnComponentProps" @click ="emitRowData(data)"/>
-      </template></Column>
-      
- 
-  
+    <tutorButton v-if = "data.enrolled === true" text = "Details" type = "info" :clickFunction = "()=>emitStudentData(data)" ></tutorButton>
+    </template>
+    </Column>
   </DataTable>
 </template>
 <script>
@@ -38,16 +37,19 @@ export default {
     },
     lazyLoad: Boolean,
   },
-  emits: ["rowData"],
+  emits: ["rowData","studentData"],
   setup(props,{emit}) {
     const columns = Object.keys(props.dataEntries[0]);
     const emitRowData = (data) => {
-      console.log(data);
       emit("rowData", data);
+    };
+    const emitStudentData = (data) => {
+      emit("studentData", data);
     };
     return {
       columns,
-      emitRowData
+      emitRowData,
+      emitStudentData,
     };
   },
 };

@@ -21,6 +21,9 @@ export default {
             type: Boolean,
             default: false
         },
+        iconLabel:{
+        type: String,
+        },
         clickFunction: {
             type: Function,
             default: () => {}

@@ -19,6 +19,7 @@ import TextArea from 'primevue/textarea'
 import router from './router/router.js'
 import TutorDialogEnrollStudent from './tutorFormBuilder/tutorDialogEnrollStudent.vue'
 import MultiSelect from 'primevue/multiselect'
+import tutorStudentCard from './tutorFormBuilder/tutorStudentCard.vue'
 
 
 import "primeicons/primeicons.css"
@@ -47,6 +48,7 @@ app.component('tutorButton',TutorButton)
 app.component("tutorDialog",tutorDialog)
 app.component('tutorLogin',tutorLogin)
 app.component('tutorDialogEnrollStudent',TutorDialogEnrollStudent)
+app.component('tutorStudentCard',tutorStudentCard)
 
 
 app.use(PrimeVue,{
