@@ -23,7 +23,7 @@
       @sendQuery="updateStudentList"
     ></tutorDialog>
     <tutorDialogEnrollStudent v-if = "visibleEnrollDialog" :studentId = "studentId" :labels = "dialogLabels" @sendEnrollQuery = "enrollStudentInList"></tutorDialogEnrollStudent>
-    <tutorStudentCard v-if = "visibleStudentDialog" :studentInfo = "studentData"></tutorStudentCard>
+    <tutorStudentCard v-if = "visibleStudentDialog" :studentInfo = "studentData" @changeRecievedAmount = "sendChangeInRecievedAmount"></tutorStudentCard>
    <!-- Data Table -->
     <div v-if="data.length > 0" class="mt-6">
       <tutorDataTable
@@ -113,6 +113,9 @@ export default {
       console.log(students);
       student.enrollStudent(students);
     }
+  const sendChangeInRecievedAmount = (amount) =>{
+    student.enrollStudent(amount);
+  }
   watchEffect(() => {
       data.value = student.students;
     });
@@ -132,7 +135,8 @@ export default {
       visibleEnrollDialog,
       getStudentDetails,
       studentData,
-      visibleStudentDialog
+      visibleStudentDialog,
+      sendChangeInRecievedAmount
       
     };
   },
