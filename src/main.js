@@ -23,6 +23,7 @@ import Select from 'primevue/select'
 import tutorStudentCard from './tutorFormBuilder/tutorStudentCard.vue'
 import Card from 'primevue/card'
 import tutorPaymentCard from './tutorFormBuilder/tutorPaymentCard.vue'
+import tutorDialogConfirmation from './tutorFormBuilder/tutorDialogConfirmation.vue'
 
 import "primeicons/primeicons.css"
 
@@ -53,6 +54,7 @@ app.component('tutorLogin',tutorLogin)
 app.component('tutorDialogEnrollStudent',TutorDialogEnrollStudent)
 app.component('tutorStudentCard',tutorStudentCard)
 app.component('tutorPaymentCard',tutorPaymentCard)
+app.component('tutorDialogConfirmation',tutorDialogConfirmation)
 
 
 app.use(PrimeVue,{

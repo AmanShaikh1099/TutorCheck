@@ -25,14 +25,14 @@
     <tutorDialogEnrollStudent v-if = "visibleEnrollDialog" :studentId = "studentId" :labels = "dialogLabels" @sendEnrollQuery = "enrollStudentInList"></tutorDialogEnrollStudent>
     <tutorStudentCard v-if = "visibleStudentDialog" :studentInfo = "studentData" @changeRecievedAmount = "sendChangeInRecievedAmount"></tutorStudentCard>
     <tutorPaymentCard v-if = "visiblePaymentDialog" :studentName = "studentName" :studentPayments= "studentPaymentsDetails" :amountQuoted = "studentAmountQuoted"></tutorPaymentCard>
-    
+    <tutorDialogConfirmation v-if = "visibleConfirmationDialog" :message = "dialogMessage" @confirm = "deleteStudents(studentId)"></tutorDialogConfirmation>
    <!-- Data Table -->
     <div v-if="data.length > 0" class="mt-6">
       <tutorDataTable
         :dataEntries="data"
         @rowData = "addLabels"
         @studentData = "getStudentDetails"
-        @deletedStudent="deleteStudents"
+        @deletedStudent="openDialogConfirmationDeletion"
         @paymentData = "getStudentPaymentDetails"
         class="border-t border-gray-300 shadow-sm rounded-md overflow-hidden"
         :column-component="columnComponent"
@@ -50,6 +50,7 @@ import tutorDataTable from "../tutorFormBuilder/tutorDataTable.vue";
 import TutorButton from "../tutorFormBuilder/tutorButton.vue";
 import { useRouter } from "vue-router";
 import tutorPaymentCard from "@/tutorFormBuilder/tutorPaymentCard.vue";
+import TutorDialogConfirmation from "@/tutorFormBuilder/tutorDialogConfirmation.vue";
 export default {
   components: { tutorDataTable, TutorButton },
   name: "TutorCheckForm",
@@ -63,12 +64,14 @@ export default {
     const visibleStudentDialog = ref(false);
     const studentData = ref({});
     const studentName = ref("");
+    const studentId = ref(0)
     const studentPaymentsDetails = ref([]);
     const visiblePaymentDialog = ref(false);
     const visibleEnrollDialog = ref(false);
+    const visibleConfirmationDialog = ref(false)
     const studentAmountQuoted = ref(0)
     const columnComponent = ref(markRaw(TutorButton));
-    const studentId = ref(0);
+    const dialogMessage = ref('')
     const createNewEntry = () =>{
       visible.value = !visible.value;
     }
@@ -128,6 +131,17 @@ export default {
   const deleteStudents = (studentId) =>{
     student.deleteStudent(studentId);
   }
+  const openDialogConfirmationDeletion = (id)=>{
+     student.getStudentWithId(id).then(response =>{
+      studentId.value = id;
+      studentName.value = response.name
+      dialogMessage.value = "All Records for "+ studentName.value +" Would be deleted (including Payments)"
+      visibleConfirmationDialog.value = !visibleConfirmationDialog.value
+     })
+     .catch(error =>{
+      console.log(error)
+     })
+  }
   const getStudentPaymentDetails = (studentId) =>{
     student.getStudentPayments(studentId).then((response)=> {
       studentName.value = response.name
@@ -165,7 +179,10 @@ export default {
       studentName,
       studentPaymentsDetails,
       visiblePaymentDialog,
-      studentAmountQuoted
+      studentAmountQuoted,
+      openDialogConfirmationDeletion,
+      dialogMessage,
+      visibleConfirmationDialog
       
     };
   },
