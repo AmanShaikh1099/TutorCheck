@@ -17,6 +17,17 @@
     <tutorButton v-if = "data.enrolled === true" text = "Details" type = "info" :clickFunction = "()=>emitStudentData(data)" ></tutorButton>
     </template>
     </Column>
+    <Column> 
+    <template #body="{ data}">
+    <tutorButton text = "Delete" type = "danger" :clickFunction = "() => emitDeletedStudent(data)"/>
+    </template>
+    </Column>
+    <Column> 
+    <template #body="{ data}">
+    <tutorButton v-if = "data.enrolled === true" text = "Payments" type = "Success" :clickFunction = "()=>emitPaymentData(data)" ></tutorButton>
+    </template>
+    
+    </Column>
   </DataTable>
 </template>
 <script>
@@ -37,7 +48,7 @@ export default {
     },
     lazyLoad: Boolean,
   },
-  emits: ["rowData","studentData"],
+  emits: ["rowData","studentData","deletedStudent","paymentData"],
   setup(props,{emit}) {
     const columns = Object.keys(props.dataEntries[0]);
     const emitRowData = (data) => {
@@ -46,10 +57,18 @@ export default {
     const emitStudentData = (data) => {
       emit("studentData", data);
     };
+    const emitDeletedStudent = (data) => {
+      emit("deletedStudent", data.student_id);
+    };
+    const emitPaymentData = (data) => {
+      emit("paymentData", data.student_id);
+    };
     return {
       columns,
       emitRowData,
       emitStudentData,
+      emitDeletedStudent,
+      emitPaymentData,
     };
   },
 };

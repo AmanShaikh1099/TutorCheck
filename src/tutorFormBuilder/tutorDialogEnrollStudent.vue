@@ -19,12 +19,7 @@
         autocomplete="off"
         placeholder="Amount Recieved"
       />
-      <InputText
-        v-model="recievedBy"
-        class="flex-auto"
-        autocomplete="off"
-        placeholder="Recieved By"
-      />
+      <Select v-model="recievedBy" :options="recieved_person" optionLabel="name" placeholder="Recieved BY" class="flex-auto"/>
       <MultiSelect
         v-model="selectedSubjects"
         showClear
@@ -95,6 +90,12 @@ export default {
     const quotedAmount = ref("");
     const amountRecieved = ref("");
     const recievedBy = ref("");
+    const recieved_person = ref([{
+      name: "Akhtar Sir"
+    },
+  {
+    name: "Mukesh Sir"
+  }]);
     const computedLabels = computed(() => {
       return props.labels;
     });
@@ -105,7 +106,7 @@ export default {
         id: props.studentId,
         amount_quoted: quotedAmount.value,
         amount_recieved: amountRecieved.value,
-        recieved_by: recievedBy.value,
+        recieved_by: recievedBy.value.name,
         enrolled_subjects: JSON.stringify(selectedSubjects.value),
         enrolled: true,
       });
@@ -123,6 +124,7 @@ export default {
       computedLabels,
       selectedSubjects,
       subjects,
+      recieved_person,
 
       sendEnrolledQuery,
     };

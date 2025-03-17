@@ -82,6 +82,38 @@ export const useStudentStore = defineStore("students", {
         console.log(error.message)
       })
     },
+    deleteStudent(studentId){
+      api.delete(`student/${studentId}`,{headers:{
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`
+      }
+    }
+    ).then((response)=>{
+        console.log(response.data)
+        this.students = this.students.filter((student)=> student.student_id !== studentId)
+      }).catch((error)=>{
+        console.log(error.message)
+      })
+    },
+    addStudentPayments(studentId, payment){
+      api.post(`student/payments/${studentId}`,payment, {headers:{
+         Authorization: `Bearer ${sessionStorage.getItem("token")}`
+      }
+      }).then((response)=>{
+        console.log(response.data)
+      }).catch((error)=>{
+        console.log(error.message)
+      })
+    },
+    getStudentPayments(studentId){
+     return api.get(`student/payments/${studentId}`,{headers:{
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`
+      }}).then((response)=>{
+        console.log(response.data)
+        return response.data;
+      }).catch((error)=>{
+        console.log(error.message)
+      })
+    },
     userLogin(username, password) {
      return api.post("auth/login",{
       username,

@@ -24,12 +24,16 @@
     ></tutorDialog>
     <tutorDialogEnrollStudent v-if = "visibleEnrollDialog" :studentId = "studentId" :labels = "dialogLabels" @sendEnrollQuery = "enrollStudentInList"></tutorDialogEnrollStudent>
     <tutorStudentCard v-if = "visibleStudentDialog" :studentInfo = "studentData" @changeRecievedAmount = "sendChangeInRecievedAmount"></tutorStudentCard>
+    <tutorPaymentCard v-if = "visiblePaymentDialog" :studentName = "studentName" :studentPayments= "studentPaymentsDetails" :amountQuoted = "studentAmountQuoted"></tutorPaymentCard>
+    
    <!-- Data Table -->
     <div v-if="data.length > 0" class="mt-6">
       <tutorDataTable
         :dataEntries="data"
         @rowData = "addLabels"
         @studentData = "getStudentDetails"
+        @deletedStudent="deleteStudents"
+        @paymentData = "getStudentPaymentDetails"
         class="border-t border-gray-300 shadow-sm rounded-md overflow-hidden"
         :column-component="columnComponent"
         :column-component-props="columnComponentProps"
@@ -45,6 +49,7 @@ import { onMounted, ref, computed, watchEffect,markRaw } from "vue";
 import tutorDataTable from "../tutorFormBuilder/tutorDataTable.vue";
 import TutorButton from "../tutorFormBuilder/tutorButton.vue";
 import { useRouter } from "vue-router";
+import tutorPaymentCard from "@/tutorFormBuilder/tutorPaymentCard.vue";
 export default {
   components: { tutorDataTable, TutorButton },
   name: "TutorCheckForm",
@@ -57,7 +62,11 @@ export default {
     const router = useRouter();
     const visibleStudentDialog = ref(false);
     const studentData = ref({});
+    const studentName = ref("");
+    const studentPaymentsDetails = ref([]);
+    const visiblePaymentDialog = ref(false);
     const visibleEnrollDialog = ref(false);
+    const studentAmountQuoted = ref(0)
     const columnComponent = ref(markRaw(TutorButton));
     const studentId = ref(0);
     const createNewEntry = () =>{
@@ -114,7 +123,21 @@ export default {
       student.enrollStudent(students);
     }
   const sendChangeInRecievedAmount = (amount) =>{
-    student.enrollStudent(amount);
+    student.addStudentPayments(amount.id,amount);
+  }
+  const deleteStudents = (studentId) =>{
+    student.deleteStudent(studentId);
+  }
+  const getStudentPaymentDetails = (studentId) =>{
+    student.getStudentPayments(studentId).then((response)=> {
+      studentName.value = response.name
+      studentPaymentsDetails.value = response.data
+      studentAmountQuoted.value = response.amount_quoted
+      visiblePaymentDialog.value = !visiblePaymentDialog.value
+      console.log(response);
+    }).catch((error) => {
+      console.log(error);
+    })
   }
   watchEffect(() => {
       data.value = student.students;
@@ -128,6 +151,7 @@ export default {
       updateStudentList,
       addLabels,
       enrollStudentInList,
+      getStudentPaymentDetails,
       columnComponentProps,
       columnComponent,
       studentId,
@@ -136,7 +160,12 @@ export default {
       getStudentDetails,
       studentData,
       visibleStudentDialog,
-      sendChangeInRecievedAmount
+      sendChangeInRecievedAmount,
+      deleteStudents,
+      studentName,
+      studentPaymentsDetails,
+      visiblePaymentDialog,
+      studentAmountQuoted
       
     };
   },
