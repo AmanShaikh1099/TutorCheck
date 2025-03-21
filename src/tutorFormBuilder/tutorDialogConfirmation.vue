@@ -25,7 +25,7 @@
             severity="secondary" 
             outlined 
             class="px-6 py-2 rounded-lg border-gray-300 text-gray-600 hover:bg-gray-100"
-            @click="closeDialog" 
+            @click="visible = false" 
           />
           <Button 
             label="Confirm" 
@@ -39,7 +39,8 @@
   </template>
   
   <script>
-  import { ref } from "vue";
+  import { useDialogStore } from "@/stores/useDialogStore";
+import { ref, watchEffect } from "vue";
   
   export default {
     name: "TutorDialogConfirmation",
@@ -51,6 +52,7 @@
     },
     setup(props, { emit }) {
       const visible = ref(true);
+      const dialog = useDialogStore()
   
       const closeDialog = () => {
         visible.value = false;
@@ -61,6 +63,11 @@
         emit("confirm"); 
         visible.value = false;
       };
+      watchEffect(()=>{
+        if(!visible.value){
+          dialog.isConfirmationDialogOpen = false
+        }
+      })
   
       return { visible, closeDialog, confirmAction };
     },

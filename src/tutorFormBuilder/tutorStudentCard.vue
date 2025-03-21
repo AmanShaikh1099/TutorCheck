@@ -65,7 +65,8 @@
 </template>
 
 <script>
-import { ref, watch } from "vue";
+import { useDialogStore } from "@/stores/useDialogStore";
+import { ref, watch, watchEffect } from "vue";
 export default {
   name: "tutorStudentCard",
   props: {
@@ -77,6 +78,7 @@ export default {
   emit:["changeRecievedAmount"],
   setup(props,{emit}) {
     console.log(props.studentInfo);
+    const dialog = useDialogStore()
     const visible = ref(true);
     const recieved_person = [{
       "name": "Akhtar Sir"
@@ -110,12 +112,21 @@ export default {
       visible.value = false;
     }
     const amountRecieved = ref(amount_recieved);
-    watch(amountRecieved, () => {
-      console.log(recieved_name.value,recieved_by)
+   
+    const closeDialog=() =>{
+    visible.value = false;
+    dialog.isStudentDialogOpen = false
+    } 
+    watchEffect(()=>{
+      if(!visible.value){
+        console.log(dialog.isStudentDialogOpen)
+        dialog.isStudentDialogOpen = false
+      }
       if (amountRecieved.value !== amount_recieved) {
         isActive.value = true;
       }
-    });
+    }
+  )
     return {
       name,
       parent_contact,
@@ -130,7 +141,8 @@ export default {
       recieved_person,
       recieved_by,
       recieved_name,
-      emitChangeInRecievedAmount
+      emitChangeInRecievedAmount,
+      closeDialog
     };
   },
 };

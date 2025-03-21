@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { useDialogStore } from "@/stores/useDialogStore";
 import { ref, computed, watchEffect } from "vue";
 export default {
   name: "tutorDialogEnrollStudent",
@@ -80,6 +81,7 @@ export default {
     console.log(props.labels);
     const visible = ref(true);
     const selectedSubjects = ref();
+    const dialog = useDialogStore()
     const subjects = ref([
       { name: "Maths", code: "MTH" },
       { name: "Physics", code: "PHY" },
@@ -112,8 +114,12 @@ export default {
       });
       visible.value = false;
     };
+    
     watchEffect(() =>{
-      console.log(JSON.stringify(selectedSubjects.value));
+      console.log(dialog.isEnrollDialogOpen)
+      if(!visible.value) {
+            dialog.isEnrollDialogOpen = false
+       }
     })
     
     return {
@@ -126,7 +132,7 @@ export default {
       subjects,
       recieved_person,
 
-      sendEnrolledQuery,
+      sendEnrolledQuery
     };
   },
 };

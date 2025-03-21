@@ -55,7 +55,9 @@
   
   
 <script>
-import {ref} from 'vue'
+import { useDialogStore } from '@/stores/useDialogStore'
+import { Dialog } from 'primevue'
+import {ref, watchEffect} from 'vue'
 export default {
     name: "tutorPaymentCard",
     props: {
@@ -73,12 +75,18 @@ export default {
         }
     },
     setup(props){
+        const dialog = useDialogStore()
         const totalAmountRecieved = props.studentPayments.reduce((acc,item)=>{
             return acc + item.amount_recieved
         },0)
         const balanceAmount = props.amountQuoted - totalAmountRecieved
         console.log(totalAmountRecieved)
         const visible = ref(true);
+        watchEffect(()=>{
+        if(!visible.value){
+          dialog.isPaymentDialogOpen = false
+        }
+        })
         return {visible,totalAmountRecieved, balanceAmount}
     }
 

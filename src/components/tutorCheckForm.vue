@@ -5,7 +5,7 @@
       <tutorButton
         text="New"
         type="success"
-        :clickFunction="createNewEntry"
+        :clickFunction="() => dialog.openDialog()"
         class="bg-green-500 text-white px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 absolute top-0 right-0"
       ></tutorButton>
 
@@ -18,14 +18,14 @@
 
     <!-- Tutor Dialog -->
     <tutorDialog
-      v-if="visible === true"
+      v-if="dialog.isDialogOpen === true"
       :labelsArray="dialogLabels"
       @sendQuery="updateStudentList"
     ></tutorDialog>
-    <tutorDialogEnrollStudent v-if = "visibleEnrollDialog" :studentId = "studentId" :labels = "dialogLabels" @sendEnrollQuery = "enrollStudentInList"></tutorDialogEnrollStudent>
-    <tutorStudentCard v-if = "visibleStudentDialog" :studentInfo = "studentData" @changeRecievedAmount = "sendChangeInRecievedAmount"></tutorStudentCard>
-    <tutorPaymentCard v-if = "visiblePaymentDialog" :studentName = "studentName" :studentPayments= "studentPaymentsDetails" :amountQuoted = "studentAmountQuoted"></tutorPaymentCard>
-    <tutorDialogConfirmation v-if = "visibleConfirmationDialog" :message = "dialogMessage" @confirm = "deleteStudents(studentId)"></tutorDialogConfirmation>
+    <tutorDialogEnrollStudent v-if = "dialog.isEnrollDialogOpen" :studentId = "studentId" :labels = "dialogLabels" @sendEnrollQuery = "enrollStudentInList"></tutorDialogEnrollStudent>
+    <tutorStudentCard v-if = "dialog.isStudentDialogOpen" :studentInfo = "studentData" @changeRecievedAmount = "sendChangeInRecievedAmount"></tutorStudentCard>
+    <tutorPaymentCard v-if = "dialog.isPaymentDialogOpen" :studentName = "studentName" :studentPayments= "studentPaymentsDetails" :amountQuoted = "studentAmountQuoted"></tutorPaymentCard>
+    <tutorDialogConfirmation v-if = "dialog.isConfirmationDialogOpen" :message = "dialogMessage" @confirm = "deleteStudents(studentId)"></tutorDialogConfirmation>
    <!-- Data Table -->
     <div v-if="data.length > 0" class="mt-6">
       <tutorDataTable
@@ -51,6 +51,7 @@ import TutorButton from "../tutorFormBuilder/tutorButton.vue";
 import { useRouter } from "vue-router";
 import tutorPaymentCard from "@/tutorFormBuilder/tutorPaymentCard.vue";
 import TutorDialogConfirmation from "@/tutorFormBuilder/tutorDialogConfirmation.vue";
+import { useDialogStore } from "@/stores/useDialogStore";
 export default {
   components: { tutorDataTable, TutorButton },
   name: "TutorCheckForm",
@@ -65,6 +66,7 @@ export default {
     const studentData = ref({});
     const studentName = ref("");
     const studentId = ref(0)
+    const dialog = useDialogStore()
     const studentPaymentsDetails = ref([]);
     const visiblePaymentDialog = ref(false);
     const visibleEnrollDialog = ref(false);
@@ -73,19 +75,21 @@ export default {
     const columnComponent = ref(markRaw(TutorButton));
     const dialogMessage = ref('')
     const createNewEntry = () =>{
+      console.log(visible.value)
       visible.value = !visible.value;
     }
     const getStudentDetails = (data) => {
     student.getStudentWithId(data.student_id).then((response) => {
       studentData.value = response;
-      visibleStudentDialog.value = !visibleStudentDialog.value;
+      dialog.isStudentDialogOpen = true
     }).catch((error) => {
       console.log(error);
     })
+    
       
     }
     const enrollStudent = () =>{
-      visibleEnrollDialog.value = !visibleEnrollDialog.value;
+      dialog.isEnrollDialogOpen = true
     }
     const addLabels = (data) => {
       dialogLabels.value = [];
@@ -136,7 +140,7 @@ export default {
       studentId.value = id;
       studentName.value = response.name
       dialogMessage.value = "All Records for "+ studentName.value +" Would be deleted (including Payments)"
-      visibleConfirmationDialog.value = !visibleConfirmationDialog.value
+      dialog.isConfirmationDialogOpen = true
      })
      .catch(error =>{
       console.log(error)
@@ -147,7 +151,7 @@ export default {
       studentName.value = response.name
       studentPaymentsDetails.value = response.data
       studentAmountQuoted.value = response.amount_quoted
-      visiblePaymentDialog.value = !visiblePaymentDialog.value
+      dialog.isPaymentDialogOpen = true
       console.log(response);
     }).catch((error) => {
       console.log(error);
@@ -182,7 +186,8 @@ export default {
       studentAmountQuoted,
       openDialogConfirmationDeletion,
       dialogMessage,
-      visibleConfirmationDialog
+      visibleConfirmationDialog,
+      dialog
       
     };
   },

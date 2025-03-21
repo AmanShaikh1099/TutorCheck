@@ -15,7 +15,7 @@
         placeholder="Standard"
       />
       <InputText
-        v-model="schoolValue"
+        v-model="schoolValue" 
          class="flex-auto"
         autocomplete="off"
         placeholder="School"
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { useDialogStore } from "@/stores/useDialogStore";
 import { onMounted, ref, watchEffect ,computed} from "vue";
 export default {
     name: "tutorDialog",
@@ -55,7 +56,13 @@ export default {
         const emailValue = ref('');
         const standardValue = ref('');
         const schoolValue = ref('');
-       
+        const dialog = useDialogStore()
+
+        const closeDialog = () =>{
+            dialog.isDialogOpen = false
+            visible.value = false;
+        }
+      
         const sendNewStudentQuery = () => {
             console.log(userNameValue.value, emailValue.value, standardValue.value,emailValue.value);    
             emit('sendQuery', {
@@ -67,7 +74,9 @@ export default {
             visible.value = false;
         }
         watchEffect(() => {
-            console.log(userNameValue.value, emailValue.value, standardValue.value,emailValue.value);    
+            if(!visible.value) {
+            dialog.isDialogOpen = false
+            }
             
         });
 
@@ -79,7 +88,10 @@ export default {
             standardValue,
             schoolValue,
 
-            sendNewStudentQuery
+            
+
+            sendNewStudentQuery,
+            closeDialog
         }
     }
 
